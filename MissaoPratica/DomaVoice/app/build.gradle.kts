@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.domavoice"
+    namespace = "br.estacio.domavoice"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.domavoice"
+        applicationId = "br.estacio.domavoice"
         minSdk = 30
         targetSdk = 34
         versionCode = 1

@@ -6,7 +6,9 @@
 
 package br.estacio.domavoice.presentation
 
+import android.media.AudioDeviceInfo
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -24,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TimeText
-import com.example.domavoice.R
+import br.estacio.domavoice.R
 import br.estacio.domavoice.presentation.theme.DomaVoiceTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,6 +36,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setTheme(android.R.style.Theme_DeviceDefault)
+
+        // Inicialize o AudioHelper
+        val audioHelper = AudioHelper(this)
+
+        // Verifique se o dispositivo de áudio está disponível
+        val isSpeakerAvailable = audioHelper.audioOutputAvailable(AudioDeviceInfo.TYPE_BUILTIN_SPEAKER)
+        val isBluetoothHeadsetConnected = audioHelper.audioOutputAvailable(AudioDeviceInfo.TYPE_BLUETOOTH_A2DP)
+
+        // Imprima os resultados no log
+        Log.d("MainActivity", "Speaker available: $isSpeakerAvailable")
+        Log.d("MainActivity", "Bluetooth headset connected: $isBluetoothHeadsetConnected")
 
         setContent {
             WearApp("Android")
