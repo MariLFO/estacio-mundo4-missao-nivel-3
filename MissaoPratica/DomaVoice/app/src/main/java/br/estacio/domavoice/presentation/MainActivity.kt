@@ -6,7 +6,10 @@
 
 package br.estacio.domavoice.presentation
 
+import android.content.Context
+import android.media.AudioDeviceCallback
 import android.media.AudioDeviceInfo
+import android.media.AudioManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -30,6 +33,8 @@ import br.estacio.domavoice.R
 import br.estacio.domavoice.presentation.theme.DomaVoiceTheme
 
 class MainActivity : ComponentActivity() {
+    private lateinit var audioManager: AudioManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
@@ -51,6 +56,33 @@ class MainActivity : ComponentActivity() {
         setContent {
             WearApp("Android")
         }
+
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+        audioManager.registerAudioDeviceCallback(object : AudioDeviceCallback() {
+            override fun onAudioDevicesAdded(addedDevices: Array<out AudioDeviceInfo>?) {
+                super.onAudioDevicesAdded(addedDevices)
+                if (audioOutputAvailable(AudioDeviceInfo.TYPE_BLUETOOTH_A2DP)) {
+                    // Um fone de ouvido Bluetooth acabou de ser conectado
+                    Log.d("MainActivity", "Bluetooth headset connected")
+                }
+            }
+
+            override fun onAudioDevicesRemoved(removedDevices: Array<out AudioDeviceInfo>?) {
+                super.onAudioDevicesRemoved(removedDevices)
+                if (!audioOutputAvailable(AudioDeviceInfo.TYPE_BLUETOOTH_A2DP)) {
+                    // Um fone de ouvido Bluetooth não está mais conectado
+                    Log.d("MainActivity", "Bluetooth headset disconnected")
+                }
+            }
+        }, null)
+    }
+
+    private fun audioOutputAvailable(type: Int): Boolean {
+        // Implementação da função audioOutputAvailable
+        // Retorna verdadeiro se o tipo de dispositivo de áudio especificado estiver disponível
+        val audioDevices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
+        return audioDevices.any { it.type == type }
     }
 }
 
