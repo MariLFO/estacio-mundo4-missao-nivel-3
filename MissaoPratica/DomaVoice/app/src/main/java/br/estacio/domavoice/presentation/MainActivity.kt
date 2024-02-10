@@ -7,10 +7,12 @@
 package br.estacio.domavoice.presentation
 
 import android.content.Context
+import android.content.Intent
 import android.media.AudioDeviceCallback
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -47,7 +49,20 @@ class MainActivity : ComponentActivity() {
 
         // Verifique se o dispositivo de áudio está disponível
         val isSpeakerAvailable = audioHelper.audioOutputAvailable(AudioDeviceInfo.TYPE_BUILTIN_SPEAKER)
+        
+        // Verifique se o dispositivo de áudio está disponível
         val isBluetoothHeadsetConnected = audioHelper.audioOutputAvailable(AudioDeviceInfo.TYPE_BLUETOOTH_A2DP)
+
+        // Se o fone de ouvido Bluetooth não estiver conectado, abra as configurações do Bluetooth
+        if (!isBluetoothHeadsetConnected) {
+            val intent = Intent(Settings.ACTION_BLUETOOTH_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                putExtra("EXTRA_CONNECTION_ONLY", true)
+                putExtra("EXTRA_CLOSE_ON_CONNECT", true)
+                putExtra("android.bluetooth.devicepicker.extra.FILTER_TYPE", 1)
+            }
+            startActivity(intent)
+        }
 
         // Imprima os resultados no log
         Log.d("MainActivity", "Speaker available: $isSpeakerAvailable")
