@@ -5,7 +5,7 @@ import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import android.content.pm.PackageManager
 
-class AudioHelper(context: Context) {
+class AudioHelper(private val context: Context) {
     private val audioManager: AudioManager =
         context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
@@ -17,4 +17,3 @@ class AudioHelper(context: Context) {
         return audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS).any{ it.type == type }
     }
 }
-
