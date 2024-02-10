@@ -1,4 +1,4 @@
-package com.example.domavoice.presentation.theme
+package br.estacio.domavoice.presentation.theme
 
 import androidx.compose.runtime.Composable
 import androidx.wear.compose.material.MaterialTheme

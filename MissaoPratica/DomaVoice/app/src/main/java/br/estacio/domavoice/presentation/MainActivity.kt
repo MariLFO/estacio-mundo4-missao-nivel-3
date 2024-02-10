@@ -4,7 +4,7 @@
  * changes to the libraries and their usages.
  */
 
-package com.example.domavoice.presentation
+package br.estacio.domavoice.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -25,7 +25,7 @@ import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TimeText
 import com.example.domavoice.R
-import com.example.domavoice.presentation.theme.DomaVoiceTheme
+import br.estacio.domavoice.presentation.theme.DomaVoiceTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
